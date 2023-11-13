@@ -7,21 +7,56 @@ This project contains a simple demo web application along with instructions for 
 ### Table of Contents
 1. [Create AWS CodeCommit Repository](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#create-aws-codecommit-repository)
 2. [Create IAM User and Role](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#create-iam-user-and-role)
-3. [Clone Repository](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#clone-repository)
-4. [Give User Access to CodeCommit Repo](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#give-user-access-to-codecommit-repo)
+3. [Give User Access to CodeCommit Repo](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#give-user-access-to-codecommit-repo)
+4. [Clone Repository](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#clone-repository)
 5. [CodeBuild Setup](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#codebuild-setup)
 6. [S3 Bucket Setup](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#s3-bucket-setup)
 7. [IAM Role for CodeDeploy](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#iam-role-for-codedeploy)
-8. [CodeDeploy Setup](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#codedeploy-setup)
-9. [EC2 Instance Setup](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#ec2-instance-setup)
+8. [EC2 Instance Setup](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#ec2-instance-setup)
+9. [CodeDeploy Setup](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#codedeploy-setup)
 10. [CI/CD Pipeline Setup](https://github.com/shubhzzz19/aws-devops-cicd-project/blob/main/README.md#cicd-pipeline-setup)
 
 ### Create AWS CodeCommit Repository
+1. Go to the AWS CodeCommit service.
+2. Create a new repository with the name (e.g., *demo-app*).
+3. Clone the repository using the provided HTTPS URL.
+
 ### Create IAM User and Role
-### Clone Repository
+1. Go to the AWS IAM service.
+2. Create a new IAM user (e.g., aws-devops-user) with the necessary permissions.
+3. Note the console sign-in URL, username, and password.
+4. Give the user permission to commit by attaching the AWSCodeCommitPowerUser policy.
+ 
 ### Give User Access to CodeCommit Repo
+1. Go to IAM > Users > *<user-name>* > Security Credentials.
+2. Under HTTPS Git credentials for AWS CodeCommit, generate credentials.
+3. Use these credentials to clone the repo.
+
+### Clone Repository
+1. Clone the CodeCommit repository HTML URL
+
 ### CodeBuild Setup
+1. Go to CodeBuild > Build Projects > Create build project.
+2. Configure the project with source provider AWS CodeCommit and repository (*demo-app*).
+3. Set up the build environment and buildspec file.
+4. Create the build project and start the build.
+   
 ### S3 Bucket Setup
+1. Go to the AWS S3 service and create a bucket (e.g., *dev-demo-app-build*).
+2. Update the CodeBuild project to use this bucket for artifacts.
+3. Go to CodeBuild > Build projects > Select the build project > Click on *Edit* > Artifact > Select the S3 bucket
+
 ### IAM Role for CodeDeploy
+1. Go to IAM > Roles > Create role.
+2. Select AWS service as the trusted entity, use case EC2, and attach CodeDeploy-related policies i.e., *AmazonEC2FullAccess, AmazonEC2RoleforAWSCodeDeploy, AmazonS3FullAccess,AWSCodeDeployFullAccess, AWSCodeDeployRole, AmazonEC2RoleforAWSCodeDeployLimited*.
+
 ### EC2 Instance Setup
+1. Create a AWS EC2 with any suitable OS
+    
+### CodeDeploy Setup
+1. Go to CodeDeploy > Create Application and Deployment Group.
+2. Configure the deployment group with the created IAM role.
+3. Install the CodeDeploy agent on your EC2 instance with help of below commands.
+''' vi install.sh '''
+
 ### CI/CD Pipeline Setup
