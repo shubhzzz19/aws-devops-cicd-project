@@ -52,11 +52,36 @@ This project contains a simple demo web application along with instructions for 
 
 ### EC2 Instance Setup
 1. Create a AWS EC2 with any suitable OS
+2. Select the AWS EC2 instance > Click on *Actions* > *Security* > *Modify IAM role* > Select *ec2-code-deploy* role > And then click on *Update IAM role*
     
 ### CodeDeploy Setup
 1. Go to CodeDeploy > Create Application and Deployment Group.
 2. Configure the deployment group with the created IAM role.
 3. Install the CodeDeploy agent on your EC2 instance with help of below commands.
-''' vi install.sh '''
+   - ```
+     vi install.sh
+     ```
+     Paste the below scipt in the install.sh file
+   - ```
+     #!/bin/bash 
+     # This installs the CodeDeploy agent and its prerequisites on Ubuntu 22.04.  
+     sudo apt-get update 
+     sudo apt-get install ruby-full ruby-webrick wget -y 
+     cd /tmp 
+     wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/releases/codedeploy-agent_1.3.2-1902_all.deb 
+     mkdir codedeploy-agent_1.3.2-1902_ubuntu22 
+     dpkg-deb -R codedeploy-agent_1.3.2-1902_all.deb codedeploy-agent_1.3.2-1902_ubuntu22 
+     sed 's/Depends:.*/Depends:ruby3.0/' -i ./codedeploy-agent_1.3.2-1902_ubuntu22/DEBIAN/control 
+     dpkg-deb -b codedeploy-agent_1.3.2-1902_ubuntu22/ 
+     sudo dpkg -i codedeploy-agent_1.3.2-1902_ubuntu22.deb 
+     systemctl list-units --type=service | grep codedeploy 
+     sudo service codedeploy-agent status
+     ```
+     To run the file use the below command.
+   - ` ./install.sh `
 
 ### CI/CD Pipeline Setup
+1. Go to CodePipeline > Create Pipeline.
+2. Configure the pipeline stages for CodeCommit, CodeBuild, and CodeDeploy.
+3. Release the pipeline, and the application will be deployed automatically.
+
